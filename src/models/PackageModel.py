@@ -3,7 +3,6 @@ from pydantic import Field, validator
 from typing import List, Optional, Union, Literal
 from sdks.novavision.src.base.model import Package, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, Config
 
-
 class InputImage(Input):
     name: Literal["inputImage"] = "inputImage"
     value: Union[List[Image], Image]
@@ -70,7 +69,6 @@ class KeepSideBBox(Config):
     class Config:
         title = "Keep Sides"
 
-
 class Degree(Config):
     """
         Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
@@ -82,39 +80,33 @@ class Degree(Config):
     placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
 
     class Config:
-        title = "Angle"
-
-
-class PackageInputs(Inputs):
+        title = "Angleee"
+class CropExampleExecutorInputs(Inputs):
     inputImage: InputImage
 
-
-class PackageConfigs(Configs):
+class CropExampleExecutorConfigs(Configs):
     degree: Degree
     drawBBox: KeepSideBBox
 
 
-class PackageOutputs(Outputs):
+class CropExampleExecutorOutputs(Outputs):
     outputImage: OutputImage
 
 
-class PackageRequest(Request):
-    inputs: Optional[PackageInputs]
-    configs: PackageConfigs
+class CropExampleExecutorRequest(Request):
+    inputs: Optional[CropExampleExecutorInputs]
+    configs: CropExampleExecutorConfigs
 
     class Config:
         json_schema_extra = {
             "target": "configs"
         }
+class CropExampleExecutorResponse(Response):
+    outputs: CropExampleExecutorOutputs
 
-
-class PackageResponse(Response):
-    outputs: PackageOutputs
-
-
-class PackageExecutor(Config):
-    name: Literal["Package"] = "Package"
-    value: Union[PackageRequest, PackageResponse]
+class CropExampleExecutor(Config):
+    name: Literal["CropExampleExecutor"] = "CropExampleExecutor"
+    value: Union[CropExampleExecutorRequest, CropExampleExecutorResponse]
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
 
@@ -129,7 +121,7 @@ class PackageExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[PackageExecutor]
+    value: Union[CropExampleExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
